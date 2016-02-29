@@ -2158,7 +2158,8 @@ static int test_mount_encrypted_fs(struct crypt_mnt_ftr* crypt_ftr,
   } else {
     /* Try mounting the file system anyway, just in case the problem's with
      * the footer, not the key. */
-    sprintf(tmp_mount_point, "%s/tmp_mnt", mount_point);
+    snprintf(tmp_mount_point, sizeof(tmp_mount_point), "%s/tmp_mnt",
+             mount_point);
     mkdir(tmp_mount_point, 0755);
     if (fs_mgr_do_mount(fstab, DATA_MNT_POINT, crypto_blkdev, tmp_mount_point)) {
       SLOGE("Error temp mounting decrypted block device\n");
