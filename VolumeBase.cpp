@@ -223,7 +223,7 @@ status_t VolumeBase::unmount(bool detach /* = false */) {
     }
 
     setState(State::kEjecting);
-    for (auto vol : mVolumes) {
+    for (const auto& vol : mVolumes) {
         if (vol->destroy()) {
             LOG(WARNING) << getId() << " failed to destroy " << vol->getId()
                     << " stacked above";
