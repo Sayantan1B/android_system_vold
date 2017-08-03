@@ -90,6 +90,8 @@ const char *VolumeManager::LOOPDIR           = "/mnt/obb";
 
 static const char* kUserMountPath = "/mnt/user";
 
+bool VolumeManager::shutting_down = false;
+
 static const unsigned int kMajorBlockMmc = 179;
 static const unsigned int kMajorBlockExperimentalMin = 240;
 static const unsigned int kMajorBlockExperimentalMax = 254;
@@ -642,12 +644,14 @@ int VolumeManager::shutdown() {
     if (mInternalEmulated == nullptr) {
         return 0; // already shutdown
     }
+    shutting_down = true;
     mInternalEmulated->destroy();
     mInternalEmulated = nullptr;
     for (const auto& disk : mDisks) {
         disk->destroy();
     }
     mDisks.clear();
+    shutting_down = false;
     return 0;
 }
 
