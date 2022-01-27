@@ -7,7 +7,6 @@ common_src_files := \
 	NetlinkManager.cpp \
 	NetlinkHandler.cpp \
 	Process.cpp \
-	fs/Exfat.cpp \
 	fs/Ext4.cpp \
 	fs/F2fs.cpp \
 	fs/Ntfs.cpp \
@@ -88,8 +87,9 @@ common_static_libraries := \
 vold_conlyflags := -std=c11
 vold_cflags := -Werror -Wall -Wno-missing-field-initializers -Wno-unused-variable -Wno-unused-parameter
 
-ifeq ($(TARGET_KERNEL_HAVE_EXFAT),true)
-vold_cflags += -DCONFIG_KERNEL_HAVE_EXFAT
+ifneq ($(TARGET_EXFAT_DRIVER),)
+  vold_cflags += -DCONFIG_EXFAT_DRIVER=\"$(TARGET_EXFAT_DRIVER)\"
+  common_src_files += fs/Exfat.cpp
 endif
 
 ifeq ($(TARGET_KERNEL_HAVE_NTFS),true)
